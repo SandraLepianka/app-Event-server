@@ -14,6 +14,7 @@ const cors         = require('cors');
 const Users = require('./models/user-model');
 const Events = require('./models/event-model');
 var eventsApi = require('./routes/events-api');
+const multer = require('multer');
 
 const authRoutes = require('./routes/auth-routes');
 

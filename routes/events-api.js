@@ -1,19 +1,28 @@
 var express = require('express');
 var router = express.Router();
+const upload = require('../config/multer');
 
 const Event = require('../models/event-model');
 
 /* GET = EVENT LIST. */
-router.get('/events', (req, res, next) => {
-  Event.find(eventsList)
-  .then(eventsList => {
+router.post('/', upload.single('file'), function(req, res) {
+  const event = new Event({
+    type: req.body.type,
+    name: req.body.name,
+    image: `/uploads/${req.file.filename}`,
+    details: JSON.parse(req.body.details) || []
+  });
+
+  event.save((err) => {
     if (err) {
-      res.json(err);
-      return;
+      return res.send(err);
     }
-    res.json(eventsList);
-  })
-  .catch(error => next(error));
+
+    return res.json({
+      message: 'New Event created!',
+      event: event
+    });
+  });
 });
 
 /* CREATE  A NEW EVENT. */
