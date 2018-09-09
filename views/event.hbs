@@ -1,0 +1,20 @@
+
+<h1>Event Page populating from the DataBase</h1>
+
+
+<h1>Events</h1>
+{{#each event}}
+    <p><a href="event/{{this._id}}">{{this.}}</a></p>
+    <a href="/event/edit?event_id={{this._id}}" class="edit-button">EDIT</a>
+{{/each}}
+
+
+
+<div>
+             <button class="event"><a href="/private">Go To Event Add Page</a></button>
+</div>
+<hr>
+
+<div>
+             <button class="event"><a href="/">Go To Index Page</a></button>
+</div>

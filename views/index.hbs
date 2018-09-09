@@ -1,3 +1,23 @@
+<h1> Index Page</h1>
+ <h2>Login</h2>
+  <form id="form" action="/login" method="POST">
+  <label for="username">Username</label>
+  <input type="text" name="username" placeholder="username">
+   <br><br> 
+  <label for="password">Password</label>
+  <input type="password" name="password" placeholder="password">
+  <br><br>
+     <button>Log In</button>
+  </form>
+
+  {{#if errorMessage }}
+    <div class="error-message">{{ errorMessage }}</div>
+  {{/if}}
+
+  <button class="login"><a href="/login">Sign in</button>
+  {{!-- <button class="login"><a href="/login">Login</a></button> --}}
+  <button class="event"><a href="/event">Go To Event Page</a></button>
+
 <h1>{{title}}</h1>
 <p>Welcome to {{title}} !!!</p>
 <h1> Hello World</h1>
