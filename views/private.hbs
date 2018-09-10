@@ -1,3 +1,21 @@
 <h1>Private Page</h1>
 
+
+<h1>Event Page populating from the DataBase</h1>
+
+
+<h1>Events</h1>
+{{#each event}}
+    <p><a href="event/{{this._id}}">{{this.name}}</a></p>
+    <a href="/event/edit?event_id={{this._id}}" class="edit-button">EDIT</a>
+{{/each}}
+
+
+
+
+
+<div>
+             <button class="event"><a href="/">Go To Index Page</a></button>
+</div>
+
 <a href="/logout">Logout</a>

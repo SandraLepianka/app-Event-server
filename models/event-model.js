@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const eventSchema = new mongoose.Schema({
-  type: {
+  genre: {
     type: String,
     required: [true, 'The event type is required']
   },
@@ -12,7 +12,7 @@ const eventSchema = new mongoose.Schema({
   image: {
     type: String, default: ''
   },
-  details: {
+  info: {
     type: Array,
     default: []
   }

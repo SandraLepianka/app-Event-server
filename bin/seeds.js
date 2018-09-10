@@ -6,18 +6,18 @@ const dbName = 'explorer-blog';
 mongoose.connect(`mongodb://localhost/event-server`);
 
 const event = [
-  {
-    type: "Art and Fashion",
+  { 
+    genre: "Fashion and Art",
     name: "CA Bacardi Night of Art & Fashion",
     image: "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F49125914%2F130801460505%2F1%2Foriginal.jpg?w=1000&auto=compress&rect=0%2C8%2C498%2C249&s=0eed391aa7a9a0868fc1e285171d3a6c.jpg",
-    details: [
+    info: [
         "Kick off the 25th Anniversary of Dress for Success Miami",
         "Location: American Museum of the Cuban Diaspora",
         "Celebrate Celia Cruz in a preview of 'Celia Forever'"
     ]
   },
   {
-    type: "Yoga Sessions",
+    genre: "Health and Wellness",
     name: "lululemon Yoga",
     image: "",
     details: [

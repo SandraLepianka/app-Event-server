@@ -4,7 +4,7 @@
 
 <h1>Events</h1>
 {{#each event}}
-    <p><a href="event/{{this._id}}">{{this.}}</a></p>
+    <p><a href="event/{{this._id}}">{{this.name}}</a></p>
     <a href="/event/edit?event_id={{this._id}}" class="edit-button">EDIT</a>
 {{/each}}
 

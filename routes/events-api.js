@@ -5,36 +5,28 @@ const upload = require('../config/multer');
 const Event = require('../models/event-model');
 
 /* GET = EVENT LIST. */
-router.post('/', upload.single('file'), function(req, res) {
-  const event = new Event({
-    type: req.body.type,
-    name: req.body.name,
-    image: `/uploads/${req.file.filename}`,
-    details: JSON.parse(req.body.details) || []
-  });
 
-  event.save((err) => {
+router.get('/events', (req, res, next) => {
+  Event.find(eventsList)
+  .then(eventsList => {
     if (err) {
-      return res.send(err);
+      res.json(err);
+      return;
     }
-
-    return res.json({
-      message: 'New Event created!',
-      event: event
-    });
-  });
+    res.json(eventsList);
+  })
+  .catch(error => next(error));
 });
 
 /* CREATE  A NEW EVENT. */
 router.post('/events', (req, res, next) => {
     const theEvent = new Event({
-     type: req.body.type,
+      genre: req.body.genre,
       name: req.body.name,
-      image: req.body.image || '',
-      details: req.body.details
-      
+      info: req.body.info,
+      image: '',
     });
-  
+
     theEvent.save()
     .then(theEvent => {
       res.json({
@@ -46,53 +38,54 @@ router.post('/events', (req, res, next) => {
   });
 
   /* GET A SINGLE EVENT */
-router.get('/phones/:id', (req, res, next) => {
+router.get('/events/:id', (req, res, next) => {
   if(!mongoose.Types.ObjectId.isValid(req.params.id)) {
     res.status(400).json({ message: 'Specified id is not valid' });
     return;
   }
 
-  Phone.findById(req.params.id)
-  .then(thePhone => {
-      res.json(thePhone);
+  Event.findById(req.params.id)
+  .then(theEvent => {
+      res.json(theEvent);
   })
   .catch(error => next(error));
 });
 
 /* EDIT AN EVENT. */
-router.put('/phones/:id', (req, res, next) => {
+router.put('/events/:id', (req, res, next) => {
   if(!mongoose.Types.ObjectId.isValid(req.params.id)) {
     res.status(400).json({ message: 'Specified id is not valid' });
     return;
   }
 
   const updates = {
-    brand: req.body.brand,
+
+    genre: req.body.genre,
     name: req.body.name,
-    specs: req.body.specs,
-    image: req.body.image
+    image: req.body.image,
+    info: req.body.info,
   };
 
-  Phone.findByIdAndUpdate(req.params.id, updates)
-  .then(phone => {
+  Event.findByIdAndUpdate(req.params.id, updates)
+  .then(event => {
     res.json({
-      message: 'Phone updated successfully'
+      message: 'Event list updated successfully'
     });
   }) 
   .catch(error => next(error));     
 });
 
 /* DELETE AN EVENT. */
-router.delete('/phones/:id', (req, res, next) => {
+router.delete('/events/:id', (req, res, next) => {
   if(!mongoose.Types.ObjectId.isValid(req.params.id)) {
     res.status(400).json({ message: 'Specified id is not valid' });
     return;
   }
 
-  Phone.remove({ _id: req.params.id })
+  Event.remove({ _id: req.params.id })
   .then(message => {
     return res.json({
-      message: 'Phone has been removed!'
+      message: 'Event has been removed!'
     });
   })
   .catch(error => next(error));

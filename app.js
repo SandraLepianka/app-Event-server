@@ -13,7 +13,6 @@ const path         = require('path');
 const cors         = require('cors');
 const Users = require('./models/user-model');
 const Events = require('./models/event-model');
-var eventsApi = require('./routes/events-api');
 const multer = require('multer');
 
 const authRoutes = require('./routes/auth-routes');
@@ -22,10 +21,9 @@ const passport   = require('passport');
 
 mongoose.Promise = Promise;
 mongoose
-.connect('mongodb://localhost/event-server', {useMongoClient: true})
+.connect(process.env.MONGODB_URI, {useMongoClient: true})
 // .connect(process.env.MONGODB_URI, {useMongoClient: true})
 //  .connect(`mongodb://localhost/${process.env.MONGODB_URI}`, {useMongoClient: true})
-  // .connect('mongodb://localhost/event-server', {useMongoClient: true})
   .then(() => {
     console.log('Connected to Mongo!');
   }).catch(err => {
@@ -34,6 +32,8 @@ mongoose
 
 const app_name = require('./package.json').name;
 const debug = require('debug')(`${app_name}:${path.basename(__filename).split('.')[0]}`);
+const passportSetup = require('./config/passport');
+passportSetup(passport);
 
 const app = express();
 app.use(cors());
@@ -72,12 +72,14 @@ app.set('view engine', 'hbs');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 
-hbs.registerPartials(__dirname + '/views/partials');
+// hbs.registerPartials(__dirname + '/views/partials');
 
 // default value for title local
 app.locals.title = 'Events';
 
 const index = require('./routes/index');
+
+var eventsApi = require('./routes/events-api');
 
 app.use('/', index);
 app.use('/', authRoutes);
