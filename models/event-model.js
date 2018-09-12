@@ -9,13 +9,14 @@ const eventSchema = new mongoose.Schema({
     type: String,
     required: [true, 'The event name is required']
   },
-  image: {
-    type: String, default: ''
-  },
-  info: {
+
+  specs: {
     type: Array,
     default: []
-  }
+},
+  image: {
+    type: String, default: ''
+}
 });
 
 const Event = mongoose.model('Event', eventSchema);

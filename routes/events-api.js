@@ -1,36 +1,57 @@
 var express = require('express');
 var router = express.Router();
+const mongoose = require('mongoose');
+
 const upload = require('../config/multer');
 
-const Event = require('../models/event-model');
+// const Event = require('../models/event-model');
 
 /* GET = EVENT LIST. */
 
 router.get('/events', (req, res, next) => {
-  Event.find(eventsList)
-  .then(eventsList => {
-    if (err) {
-      res.json(err);
-      return;
-    }
-    res.json(eventsList);
-  })
-  .catch(error => next(error));
+  Event.find({}, (err, events) => {
+    if (err) {return res.json(err)}
+
+    return res.json(events);
+  }); 
 });
 
-/* CREATE  A NEW EVENT. */
-router.post('/events', (req, res, next) => {
+// /* CREATE  A NEW EVENT. */ NOTES!!!!!!! COMMENTED TO TEST ALAN NOTES BELOW
+
+// router.post('/', upload.single('file'), function(req, res) {
+//   const event = new Event({
+//     genre: req.body.genre,
+//     name: req.body.name,
+//     specs: JSON.parse(req.body.specs) || [],
+//     image: `/uploads/${req.file.filename}
+//     
+//   });
+
+//   theEvent.save((err) => {
+//     if (err) {
+//       return res.send(err);
+//     }
+
+//     return res.json({
+//       message: 'A new EVENT has been created!',
+//       phone: phone
+//     });
+//   });
+// });
+
+  // /* CREATE a new Phone. */ ALAN GITHUB
+  router.post('/events', (req, res, next) => {
     const theEvent = new Event({
       genre: req.body.genre,
       name: req.body.name,
-      info: req.body.info,
-      image: '',
+      specs: req.body.specs,
+      image: req.body.image || '',
     });
-
+  
     theEvent.save()
     .then(theEvent => {
       res.json({
-        message: 'New Event created!',
+        message: 'A new event has been created !',
         id: theEvent._id
       });
     })
@@ -59,11 +80,10 @@ router.put('/events/:id', (req, res, next) => {
   }
 
   const updates = {
-
     genre: req.body.genre,
     name: req.body.name,
-    image: req.body.image,
-    info: req.body.info,
+    specs: req.body.specs,
+    image: req.body.image, 
   };
 
   Event.findByIdAndUpdate(req.params.id, updates)
