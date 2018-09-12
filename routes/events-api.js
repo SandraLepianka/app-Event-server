@@ -1,62 +1,47 @@
 var express = require('express');
 var router = express.Router();
 const mongoose = require('mongoose');
-
 const upload = require('../config/multer');
 
-// const Event = require('../models/event-model');
+const Event = require('../models/event-model');
 
-/* GET = EVENT LIST. */
-
+/* GET Events list. */
 router.get('/events', (req, res, next) => {
-  Event.find({}, (err, events) => {
-    if (err) {return res.json(err)}
-
-    return res.json(events);
-  }); 
+  Event.find()
+  .then((eventsList, err) => {
+    if (err) {
+      res.json(err);
+      return;
+    }
+    res.json(eventsList);
+  })
+  .catch(error => next(error));
 });
 
-// /* CREATE  A NEW EVENT. */ NOTES!!!!!!! COMMENTED TO TEST ALAN NOTES BELOW
-
-// router.post('/', upload.single('file'), function(req, res) {
-//   const event = new Event({
-//     genre: req.body.genre,
-//     name: req.body.name,
-//     specs: JSON.parse(req.body.specs) || [],
-//     image: `/uploads/${req.file.filename}
-//     
-//   });
-
-//   theEvent.save((err) => {
-//     if (err) {
-//       return res.send(err);
-//     }
-
-//     return res.json({
-//       message: 'A new EVENT has been created!',
-//       phone: phone
-//     });
-//   });
-// });
-
-  // /* CREATE a new Phone. */ ALAN GITHUB
-  router.post('/events', (req, res, next) => {
-    const theEvent = new Event({
+  // /* CREATE a new Event. */ ALAN GITHUB
+  router.post('/', upload.single('file'), function(req, res) {
+    // console.log('req.file ', req.file);
+    const event = new Event({
       genre: req.body.genre,
       name: req.body.name,
-      specs: req.body.specs,
-      image: req.body.image || '',
+      image: `/uploads/${req.file.filename}`,
+      specs: JSON.parse(req.body.specs) || []
+      // specs: req.body.specs,
+      // image: req.body.image || '',
     });
   
-    theEvent.save()
-    .then(theEvent => {
-      res.json({
-        message: 'A new event has been created !',
-        id: theEvent._id
+    event.save((err) => {
+      if (err) {
+        return res.send(err);
+      }
+  
+      return res.json({
+        message: 'New Event created!',
+        event: event
       });
-    })
-    .catch(error => next(error));
+    });
   });
+  
 
   /* GET A SINGLE EVENT */
 router.get('/events/:id', (req, res, next) => {

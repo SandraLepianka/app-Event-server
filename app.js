@@ -21,7 +21,7 @@ const passport   = require('passport');
 
 mongoose.Promise = Promise;
 mongoose
-.connect(process.env.MONGODB_URI, {useMongoClient: true})
+.connect(`${process.env.MONGODB_URI}`, {useMongoClient: true})
 // .connect(process.env.MONGODB_URI, {useMongoClient: true})
 //  .connect(`mongodb://localhost/${process.env.MONGODB_URI}`, {useMongoClient: true})
   .then(() => {
@@ -96,7 +96,7 @@ app.use(
     }
   }
 );
-
+ 
 // Routes=======
 
 const index = require('./routes/index');
