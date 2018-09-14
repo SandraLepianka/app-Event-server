@@ -15,7 +15,6 @@ const Users = require('./models/user-model');
 const Events = require('./models/event-model');
 const multer = require('multer');
 
-const authRoutes = require('./routes/auth-routes');
 
 const passport   = require('passport');
 
@@ -95,18 +94,19 @@ app.use(
       next();
     }
   }
-);
+);  
  
 // Routes=======
 
 const index = require('./routes/index');
+const authRoutes = require('./routes/auth-routes');
 const eventsApi = require('./routes/events-api');
 
 app.use('/', index);
 app.use('/', authRoutes);
 app.use('/api', eventsApi);
 
-app.use((req, res, next) => {
+app.use((req, res ) => { 
   res.sendfile(__dirname + '/public/index.html');
 });
 

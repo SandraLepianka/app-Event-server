@@ -2,8 +2,14 @@ var express = require('express');
 var router = express.Router();
 const mongoose = require('mongoose');
 const upload = require('../config/multer');
-
+const multer = require('multer');
 const Event = require('../models/event-model');
+
+// multer for photo
+const myUploader = multer({
+  dest: __dirname + "/../public/uploads/"
+});
+
 
 /* GET Events list. */
 router.get('/events', (req, res, next) => {
@@ -18,27 +24,30 @@ router.get('/events', (req, res, next) => {
   .catch(error => next(error));
 });
 
-  // /* CREATE a new Event. */ ALAN GITHUB
-  router.post('/', upload.single('file'), function(req, res) {
-    // console.log('req.file ', req.file);
+  // /* CREATE a new Event. */
+  router.post('/events', upload.single('eventImg'),function(req, res) {
+    console.log('req.file ', req.file);
+    // const img = req.file.filename;
     const event = new Event({
       genre: req.body.genre,
       name: req.body.name,
-      image: `/uploads/${req.file.filename}`,
-      specs: JSON.parse(req.body.specs) || []
-      // specs: req.body.specs,
-      // image: req.body.image || '',
+      // image: req.body.img || '',
+      specs: req.body.specs,
+      // image: `/../public/uploads/${req.file.filename}`,
+      // specs: JSON.parse(req.body.specs) || []
+      
     });
+
+    if(req.file){
+      event.image = '/uploads/' + req.file.filename;
+    }
   
     event.save((err) => {
       if (err) {
         return res.send(err);
       }
   
-      return res.json({
-        message: 'New Event created!',
-        event: event
-      });
+      return res.json(event);
     });
   });
   
@@ -68,13 +77,13 @@ router.put('/events/:id', (req, res, next) => {
     genre: req.body.genre,
     name: req.body.name,
     specs: req.body.specs,
-    image: req.body.image, 
+    // image: req.body.image, 
   };
 
   Event.findByIdAndUpdate(req.params.id, updates)
   .then(event => {
     res.json({
-      message: 'Event list updated successfully'
+      message: `Event list updated successfully with the event ${event._id}`
     });
   }) 
   .catch(error => next(error));     
@@ -90,11 +99,10 @@ router.delete('/events/:id', (req, res, next) => {
   Event.remove({ _id: req.params.id })
   .then(message => {
     return res.json({
-      message: 'Event has been removed!'
+      message: `Event has been removed!`
     });
   })
   .catch(error => next(error));
 });
-
 
 module.exports = router;

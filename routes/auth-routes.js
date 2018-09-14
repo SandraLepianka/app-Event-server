@@ -12,6 +12,7 @@ const bcryptSalt     = 10;
 
 
 authRoutes.post('/signup', (req, res, next) => {
+  console.log('the body: ', req.body)
 const username = req.body.username;
 const password = req.body.password;
   
@@ -34,13 +35,14 @@ const newUser = new User({
     password: hashPass
 });
 
-theUser.save((err) => {
+newUser.save((err) => {
     if (err) {
       res.status(400).json({ message: 'Something went wrong' });
       return;
     }
   
-    req.login(theUser, (err) => {
+    req.login(newUser, (err) => {
+      console.log('whos is user: ', newUser)
       if (err) {
         res.status(500).json({ message: 'Something went wrong' });
         return;
@@ -86,6 +88,7 @@ authRoutes.post('/logout', (req, res, next) => {
 // ENSURE USER IS LOGGED IN = 
   // RETURNS (due to isAuth) username or 'message for unauthorized'
 authRoutes.get('/loggedin', (req, res, next) => {
+  console.log('in logged in user is: ', req.user)
     if (req.isAuthenticated()) {
       res.status(200).json(req.user);
       return;
