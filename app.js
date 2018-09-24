@@ -84,17 +84,24 @@ app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 // default value for title local
 app.locals.title = 'Events';
 
+// app.use(
+//   (req, res, next) => {
+//     res.header('Access-Control-Allow-Credential', true);
+//     res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
+//     if ('OPTIONS' == req.method) {
+//       res.send(200);
+//     } else {
+//       next();
+//     }
+//   }
+// );  
+
 app.use(
-  (req, res, next) => {
-    res.header('Access-Control-Allow-Credential', true);
-    res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
-    if ('OPTIONS' == req.method) {
-      res.send(200);
-    } else {
-      next();
-    }
-  }
-);  
+  cors({
+    credentials: true,                 // allow other domains to send cookies
+    origin: ["http://localhost:4200"]  // these are the domains that are allowed
+  })
+);
  
 // Routes=======
 
